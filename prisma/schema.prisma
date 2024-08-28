@@ -17,7 +17,20 @@ datasource db {
 model store{
   id        String @id @default(uuid())
   name      String
+  billboard Billboard[] @relation("StoreBillboard")
   userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Billboard{
+  id        String @id @default(uuid())
+  storeId   String
+  store     store @relation("StoreBillboard",fields: [storeId], references: [id])
+  label     String
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt()
+
+  @@index([storeId])
 }

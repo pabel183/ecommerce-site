@@ -1,6 +1,6 @@
 "use client";
 
-import { store } from "@prisma/client";
+import { Billboard } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
@@ -18,18 +18,20 @@ import { Label } from "@/components/ui/label";
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/ui/alert-modal";
 import { useOrigin } from "@/hooks/use-origin";
-import ApiAlert from "@/components/ui/api-alert";
+import ImageUpload from "@/components/ui/image-upload";
 
-interface SettingsFormsProps{
-    initialData: store;
-}
 
 const formSchema=z.object({
-    name:z.string().min(1),
+    label:z.string().min(1),
+    imageUrl:z.string().min(1),
 })
 type formSchemaValue=z.infer<typeof formSchema>;
 
-const SettingsForms:React.FC<SettingsFormsProps>=({
+interface BillboardFormsProps{
+    initialData: Billboard | null;
+}
+
+const BillboardForms:React.FC<BillboardFormsProps>=({
     initialData
 })=>{
     const params=useParams();
@@ -38,18 +40,29 @@ const SettingsForms:React.FC<SettingsFormsProps>=({
     const [loading,setLoading]=useState(false);
     const origin=useOrigin();
 
+    const title=initialData?"Edit billboard":"Create billboard";
+    const description=initialData?"Edit a billboard":"Add a new billboard";
+    const toastMessage=initialData?"Billboard updated":"Billboard created";
+    const action=initialData?"Save changes":"Create";
+
     const form=useForm<formSchemaValue>({
         resolver:zodResolver(formSchema),
-        defaultValues:{
-            name: initialData.name,
-        },
+        defaultValues:initialData || {
+            label: "",
+            imageUrl:""
+        }
     });
     const onSubmit=async(data:formSchemaValue)=>{
         try{
             setLoading(true);
-            await axios.patch(`/api/stores/${params.storeId}`,data);
+            if(initialData){
+                await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`,data);
+            }else{
+                await axios.post(`/api/${params.storeId}/billboards`,data);
+            }
             router.refresh();
-            toast.success("Store updated.");
+            router.push(`/${params.storeId}/billboards`);
+            toast.success(toastMessage);
         }catch(error){
             toast.error("Something went wrong");
         }finally{
@@ -59,12 +72,12 @@ const SettingsForms:React.FC<SettingsFormsProps>=({
     const onDelete=async()=>{
         try{
             setLoading(true);
-            await axios.delete(`/api/stores/${params.storeId}`);
+            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
             router.refresh();
             router.push("/");
-            toast.success("Store deleted.");
+            toast.success("Billboard deleted.");
         }catch(error){
-            toast.error("Make sure you remove product and catagories first.")
+            toast.error("Make sure you remove all catagories using this billboard first.")
         }finally{
             setLoading(false);
             setOpen(false);
@@ -80,47 +93,57 @@ const SettingsForms:React.FC<SettingsFormsProps>=({
             />
             <div className="flex items-center justify-between">
                 <Heading 
-                    title="Settings"
-                    description="Manage store preferences"
+                    title={title}
+                    description={description}
                     />
-                <Button
-                disabled={loading}
-                variant="destructive"
-                size="icon"
-                onClick={()=>setOpen(true)}
-                >
-                <Trash className="h-4 w-4"/>    
-                </Button>
+                {initialData && (
+                    <Button
+                    disabled={loading}
+                    variant="destructive"
+                    size="icon"
+                    onClick={()=>setOpen(true)}
+                    >
+                        <Trash className="h-4 w-4"/>    
+                    </Button>
+                )}
             </div>
             <Separator/>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
-                    <div className="grid grid-cols-3 gap-8">
-                        
                         <FormField 
-                            name="name"
+                            name="imageUrl"
                             control={form.control}
                             render={({field})=>(
                                 <FormItem>
-                                    <Label>Name</Label>
-                                    <Input disabled={loading} placeholder="Store name" {...field}/>
-                                    <FormMessage />
+                                    <ImageUpload
+                                    values={field.value?[field.value]:[]}
+                                    onChage={(url)=>(field.onChange(url))}
+                                    onRemove={()=>field.onChange("")}
+                                    disable={loading}
+                                    />
                                 </FormItem>
                         )}
                         />
+                    <div className="grid grid-cols-3 gap-8">
+                        <FormField 
+                            name="label"
+                            control={form.control}
+                            render={({field})=>(
+                                <FormItem>
+                                    <Label>Label</Label>
+                                    <Input disabled={loading} placeholder="Billboard label" {...field}/>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </div>
                     <Button disabled={loading} className="ml-auto" type="submit">
-                        Save Changes
+                        {action}
                     </Button>
                 </form>
             </Form>
             <Separator />
-            <ApiAlert
-            title="NEXT_PUBLIC_API_URL" 
-            description={`${origin}/api/${params.storeId}`} 
-            variant="public"
-            />
         </>
     );
 }
-export default SettingsForms;
+export default BillboardForms;
