@@ -17,7 +17,6 @@ import { Label } from "@/components/ui/label";
 
 import { Heading } from "@/components/ui/heading";
 import { AlertModal } from "@/components/ui/alert-modal";
-import { useOrigin } from "@/hooks/use-origin";
 import ImageUpload from "@/components/ui/image-upload";
 
 
@@ -38,7 +37,6 @@ const BillboardForms:React.FC<BillboardFormsProps>=({
     const router=useRouter();
     const [open,setOpen]=useState(false)
     const [loading,setLoading]=useState(false);
-    const origin=useOrigin();
 
     const title=initialData?"Edit billboard":"Create billboard";
     const description=initialData?"Edit a billboard":"Add a new billboard";
@@ -74,7 +72,7 @@ const BillboardForms:React.FC<BillboardFormsProps>=({
             setLoading(true);
             await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
             router.refresh();
-            router.push("/");
+            router.push(`/${params.storeId}/billboards`);
             toast.success("Billboard deleted.");
         }catch(error){
             toast.error("Make sure you remove all catagories using this billboard first.")
@@ -142,7 +140,6 @@ const BillboardForms:React.FC<BillboardFormsProps>=({
                     </Button>
                 </form>
             </Form>
-            <Separator />
         </>
     );
 }
