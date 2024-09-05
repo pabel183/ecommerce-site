@@ -8,7 +8,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useParams, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -129,7 +129,9 @@ const BillboardForms:React.FC<BillboardFormsProps>=({
                             render={({field})=>(
                                 <FormItem>
                                     <Label>Label</Label>
+                                    <FormControl>
                                     <Input disabled={loading} placeholder="Billboard label" {...field}/>
+                                    </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
