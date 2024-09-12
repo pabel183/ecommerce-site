@@ -115,7 +115,7 @@ const BillboardForms:React.FC<BillboardFormsProps>=({
                                 <FormItem>
                                     <ImageUpload
                                     values={field.value?[field.value]:[]}
-                                    onChage={(url)=>(field.onChange(url))}
+                                    onChange={(url)=>(field.onChange(url))}
                                     onRemove={()=>field.onChange("")}
                                     disable={loading}
                                     />

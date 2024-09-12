@@ -7,14 +7,14 @@ import { useEffect, useState } from 'react';
 
 interface ImageUploadProps{
     disable:boolean;
+    onChange: (value:string)=>void;
+    onRemove:(value:string)=>void;
     values: string[];
-    onChage: (url:string)=>void;
-    onRemove:()=>void;
 }
 const ImageUpload:React.FC<ImageUploadProps>=({
     disable,
     values,
-    onChage,
+    onChange,
     onRemove,
 })=>{
     const [mount,setMount]=useState(false);
@@ -22,30 +22,32 @@ const ImageUpload:React.FC<ImageUploadProps>=({
         setMount(true);
     },[]);
     const onUpload=(result:any)=>{
-        onChage(result.info.secure_url);
+        onChange(result.info.secure_url);
     }
     if(!mount){
         return null;
     }
+    const onDelete=(url:string)=>{
+        onRemove(url)
+    }
     return(
         <div >
             <div className='mb-4 flex items-center gap-4' >
-                {values.map((url)=>(
-                <div className='relative w-[200px] h-[200px] rounded-md overflow-hidden'>
-                    <div className='z-10 absolute top-2 right-2'>
-                        <Button variant="destructive" onClick={onRemove}>
-                            <Trash className='h-4 w-4'/>
-                        </Button>
-                    </div>
-                    <Image 
-                    className='object-fit'
-                    fill
-                    alt='Image'
-                    src={url}
-                    />
-                </div>
-                ))
-                }
+                   { values.map((url)=>(
+                        <div key={url} className='relative w-[200px] h-[200px] rounded-md overflow-hidden'>
+                            <div className='z-10 absolute top-2 right-2'>
+                                <Button variant="destructive" onClick={()=>onDelete(url)}>
+                                    <Trash className='h-4 w-4'/>
+                                </Button>
+                            </div>
+                            <Image 
+                            className='object-fit'
+                            fill
+                            alt='Image'
+                            src={url}
+                            />
+                        </div>
+                    ))}            
             </div>
             <div>
                 <CldUploadWidget onSuccess={(result)=>onUpload(result)} uploadPreset="uupahusy">
