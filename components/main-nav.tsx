@@ -43,6 +43,11 @@ export const MainNav=({
         active:pathname===`/${params.storeId}/products`
         },
         {
+        href:`/${params.storeId}/orders`,
+        lebel:"Orders",
+        active:pathname===`/${params.storeId}/orders`
+        },
+        {
         href:`/${params.storeId}/settings`,
         lebel:"Settings",
         active:pathname===`/${params.storeId}/settings`
