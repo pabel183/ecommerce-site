@@ -2,7 +2,29 @@ import {
   clerkMiddleware,
   createRouteMatcher
 } from '@clerk/nextjs/server';
-import { NextResponse } from 'next/server';
+// import { NextApiResponse } from 'next';
+// import { NextResponse } from 'next/server';
+
+// export function middleware(req: Request, res:NextApiResponse) {
+//   const origin = req.headers.get('origin');
+
+//   const response = NextResponse.next();
+
+//   response.headers.set('Access-Control-Allow-Origin', origin || '*');
+//   response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//   response.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+//   response.headers.set('Access-Control-Allow-Credentials', 'true');
+//   response.headers.set('Access-Control-Max-Age', '86400'); // Cache preflight response for 1 day
+
+//   if (req.method === 'OPTIONS') {
+//     return new Response(null, {
+//       headers: response.headers,
+//       status: 204, // No Content
+//     });
+//   }
+
+//   return response;
+// }
 
 const isProtectedRoute = createRouteMatcher([
   '/',
