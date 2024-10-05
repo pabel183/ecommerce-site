@@ -54,7 +54,7 @@ export const StoreModal=()=>{
                                 render={({field})=>(
                                     <FormItem>
                                         <FormLabel>name</FormLabel>
-                                        <Input disabled={loading} placeholder="E-Commarce"  {...field}/>
+                                        <Input disabled={loading} placeholder="Dev-Commarce"  {...field}/>
                                         <FormMessage />
                                     </FormItem>
                                 )}
