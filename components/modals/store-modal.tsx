@@ -39,8 +39,8 @@ export const StoreModal=()=>{
     }
     return(
         <Modal
-            title="Create a store"
-            description="A new store to manage products and catagories"
+            title="Name the mart"
+            description="The mart for merchandise"
             isOpen={storeModal.isOpen}
             onClose={storeModal.onClose}
         >
@@ -53,15 +53,15 @@ export const StoreModal=()=>{
                                 name="name"
                                 render={({field})=>(
                                     <FormItem>
-                                        <FormLabel>name</FormLabel>
-                                        <Input disabled={loading} placeholder="Dev-Commarce"  {...field}/>
+                                        <FormLabel>Mart name</FormLabel>
+                                        <Input disabled={loading} placeholder="Store-keeper"  {...field}/>
                                         <FormMessage />
                                     </FormItem>
                                 )}
                             />
                             <div className="pt-6 space-x-2 flex items-center justify-end w-full">
-                                <Button disabled={loading} type="button" variant="outline" onClick={storeModal.onClose}>Cancel</Button>
-                                <Button disabled={loading} type="submit">Confirm</Button>
+                                <Button disabled={loading} type="button" variant="outline" onClick={storeModal.onClose}>Wipe</Button>
+                                <Button disabled={loading} type="submit">Done</Button>
                             </div>
                         </form>
                     </Form>
