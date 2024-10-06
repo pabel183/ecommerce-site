@@ -43,7 +43,7 @@ const ImageUpload:React.FC<ImageUploadProps>=({
                             <Image 
                             className='object-fit'
                             fill
-                            alt='Image'
+                            alt='uploaded-image'
                             src={url}
                             />
                         </div>

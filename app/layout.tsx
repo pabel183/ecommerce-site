@@ -10,8 +10,8 @@ import { ThemeProvider } from "@/providers/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Dev Admine",
-  description: "Dev mart Admine Dashboard",
+  title: "StoreKeeper",
+  description: "StoreKeeper",
 };
 
 export default function RootLayout({
