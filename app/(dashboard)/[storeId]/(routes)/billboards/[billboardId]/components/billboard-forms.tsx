@@ -117,7 +117,7 @@ const BillboardForms:React.FC<BillboardFormsProps>=({
                                     values={field.value?[field.value]:[]}
                                     onChange={(url)=>(field.onChange(url))}
                                     onRemove={()=>field.onChange("")}
-                                    disable={loading}
+                                    disabled={loading}
                                     />
                                 </FormItem>
                         )}

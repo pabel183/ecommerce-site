@@ -149,7 +149,7 @@ const ProductForms:React.FC<ProductFormsProps>=({
                                         )
                                     }
                                     onRemove={(url)=>field.onChange(field.value.map((image)=>image.url!=url))}
-                                    disable={loading}
+                                    disabled={loading}
                                     values={
                                         field.value.map((image)=>{
                                             return(

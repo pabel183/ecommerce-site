@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import {toast} from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useState } from "react";
 import { useStoreModal } from "@/hooks/use-store-modal";
 import { Modal } from "../modal";
@@ -12,32 +12,32 @@ import { Form, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 
-const formSchema=z.object({
-    name:z.string().min(1),
+const formSchema = z.object({
+    name: z.string().min(1),
 })
 
-export const StoreModal=()=>{
-    const storeModal=useStoreModal();
-    const [loading,setLoading]=useState(false);
+export const StoreModal = () => {
+    const storeModal = useStoreModal();
+    const [loading, setLoading] = useState(false);
 
-    const form=useForm<z.infer<typeof formSchema>>({
-        resolver:zodResolver(formSchema),
-        defaultValues:{
-            name:""
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name: ""
         }
     });
-    const onSubmit=async (values:z.infer<typeof formSchema>)=>{
-       try{
-        setLoading(true);
-        const response= await axios.post("/api/stores",values);
-        window.location.assign(`/${response.data.id}`);
-    }catch(error){
-        toast.error("Something went wrong!");
-       }finally{
-        setLoading(false);
-       }
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        try {
+            setLoading(true);
+            const response = await axios.post("/api/stores", values);
+            window.location.assign(`/${response.data.id}`);
+        } catch (error) {
+            toast.error("Something went wrong!");
+        } finally {
+            setLoading(false);
+        }
     }
-    return(
+    return (
         <Modal
             title="Name the mart"
             description="The mart for merchandise"
@@ -48,13 +48,13 @@ export const StoreModal=()=>{
                 <div className="space-y-4 py-2 pb-4">
                     <Form {...form}>
                         <form onSubmit={form.handleSubmit(onSubmit)}>
-                            <FormField 
+                            <FormField
                                 control={form.control}
                                 name="name"
-                                render={({field})=>(
+                                render={({ field }) => (
                                     <FormItem>
                                         <FormLabel>Mart name</FormLabel>
-                                        <Input disabled={loading} placeholder="Store-keeper"  {...field}/>
+                                        <Input disabled={loading} placeholder="Store-keeper"  {...field} />
                                         <FormMessage />
                                     </FormItem>
                                 )}
